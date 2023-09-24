@@ -15,8 +15,8 @@ WINDOWS_VERSION GetWindowsVersion();
 ULONG64 FindPspSetCreateProcessNotify(WINDOWS_VERSION WindowsVersion);
 void SearchLoadedModules(CALLBACK_INFORMATION* ModuleInfo);
 
-UNICODE_STRING deviceName = RTL_CONSTANT_STRING(L"\\Device\\RedOctober");
-UNICODE_STRING symlink = RTL_CONSTANT_STRING(L"\\??\\RedOctober");
+UNICODE_STRING deviceName = RTL_CONSTANT_STRING(L"\\Device\\OffensiveDriver");
+UNICODE_STRING symlink = RTL_CONSTANT_STRING(L"\\??\\OffensiveDriver");
 
 extern "C"
 NTSTATUS
@@ -91,7 +91,7 @@ DeviceControl(
 
 	switch (stack->Parameters.DeviceIoControl.IoControlCode)
 	{
-	case RED_OCTOBER_UNPROTECT_PROCESS:
+	case OFFENSIVE_DRIVER_UNPROTECT_PROCESS:
 	{
 		if (stack->Parameters.DeviceIoControl.InputBufferLength < sizeof(TargetProcess))
 		{
@@ -143,7 +143,7 @@ DeviceControl(
 
 		break;
 	}
-	case RED_OCTOBER_PROTECT_PROCESS:
+	case OFFENSIVE_DRIVER_PROTECT_PROCESS:
 	{
 		if (stack->Parameters.DeviceIoControl.InputBufferLength < sizeof(TargetProcess))
 		{
@@ -196,7 +196,7 @@ DeviceControl(
 
 		break;
 	}
-	case RED_OCTOBER_PROCESS_PRIVILEGE:
+	case OFFENSIVE_DRIVER_PROCESS_PRIVILEGE:
 	{
 		if (stack->Parameters.DeviceIoControl.InputBufferLength < sizeof(TargetProcess))
 		{
@@ -234,7 +234,7 @@ DeviceControl(
 
 		break;
 	}
-	case RED_OCTOBER_ENUM_PROCESS_CALLBACKS:
+	case OFFENSIVE_DRIVER_ENUM_PROCESS_CALLBACKS:
 	{
 		ULONG szBuffer = sizeof(CALLBACK_INFORMATION) * 64;
 
@@ -280,7 +280,7 @@ DeviceControl(
 
 		break;
 	}
-	case RED_OCTOBER_ZERO_PROCESS_CALLBACK:
+	case OFFENSIVE_DRIVER_ZERO_PROCESS_CALLBACK:
 	{
 		if (stack->Parameters.DeviceIoControl.InputBufferLength < sizeof(TargetCallback))
 		{
@@ -322,7 +322,7 @@ DeviceControl(
 
 		break;
 	}
-	case RED_OCTOBER_ADD_PROCESS_CALLBACK:
+	case OFFENSIVE_DRIVER_ADD_PROCESS_CALLBACK:
 	{
 		if (stack->Parameters.DeviceIoControl.InputBufferLength < sizeof(NewCallback))
 		{
@@ -356,7 +356,7 @@ DeviceControl(
 
 		break;
 	}
-	case RED_OCTOBER_ENUM_DSE:
+	case OFFENSIVE_DRIVER_ENUM_DSE:
 	{
 		if (stack->Parameters.DeviceIoControl.InputBufferLength < sizeof(DSE))
 		{
@@ -388,7 +388,7 @@ DeviceControl(
 
 		break;
 	}
-	case RED_OCTOBER_DISABLE_DSE:
+	case OFFENSIVE_DRIVER_DISABLE_DSE:
 	{
 		if (stack->Parameters.DeviceIoControl.InputBufferLength < sizeof(DSE))
 		{
@@ -410,7 +410,7 @@ DeviceControl(
 
 		break;
 	}
-	case RED_OCTOBER_ENABLE_DSE:
+	case OFFENSIVE_DRIVER_ENABLE_DSE:
 	{
 		if (stack->Parameters.DeviceIoControl.InputBufferLength < sizeof(DSE))
 		{
@@ -537,7 +537,7 @@ SearchLoadedModules(
 	AUX_MODULE_EXTENDED_INFO* modules = (AUX_MODULE_EXTENDED_INFO*) ExAllocatePoolWithTag(
 		PagedPool,
 		szBuffer,
-		RED_OCTOBER_TAG);
+		OFFENSIVE_DRIVER_TAG);
 
 	if (modules == nullptr)
 	{
@@ -556,7 +556,7 @@ SearchLoadedModules(
 	if (!NT_SUCCESS(status))
 	{
 		KdPrint(("[!] AuxKlibQueryModuleInformation failed (0x%08X)", status));
-		ExFreePoolWithTag(modules, RED_OCTOBER_TAG);
+		ExFreePoolWithTag(modules, OFFENSIVE_DRIVER_TAG);
 		return;
 	}
 
@@ -578,7 +578,7 @@ SearchLoadedModules(
 		}
 	}
 
-	ExFreePoolWithTag(modules, RED_OCTOBER_TAG);
+	ExFreePoolWithTag(modules, OFFENSIVE_DRIVER_TAG);
 	return;
 }
 
