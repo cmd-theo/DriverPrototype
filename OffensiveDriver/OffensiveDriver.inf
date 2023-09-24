@@ -1,5 +1,5 @@
 ;
-; RedOctober.inf
+; OffensiveDriver.inf
 ;
 
 [Version]
@@ -7,19 +7,19 @@ Signature="$WINDOWS NT$"
 Class=System ; TODO: specify appropriate Class
 ClassGuid={4d36e97d-e325-11ce-bfc1-08002be10318} ; TODO: specify appropriate ClassGuid
 Provider=%ManufacturerName%
-CatalogFile=RedOctober.cat
+CatalogFile=OffensiveDriver.cat
 DriverVer= ; TODO: set DriverVer in stampinf property pages
 PnpLockdown=1
 
 [DestinationDirs]
 DefaultDestDir = 12
-RedOctober_Device_CoInstaller_CopyFiles = 11
+OffensiveDriver_Device_CoInstaller_CopyFiles = 11
 
 [SourceDisksNames]
 1 = %DiskName%,,,""
 
 [SourceDisksFiles]
-RedOctober.sys  = 1,,
+OffensiveDriver.sys  = 1,,
 WdfCoInstaller$KMDFCOINSTALLERVERSION$.dll=1 ; make sure the number matches with SourceDisksNames
 
 ;*****************************************
@@ -30,48 +30,48 @@ WdfCoInstaller$KMDFCOINSTALLERVERSION$.dll=1 ; make sure the number matches with
 %ManufacturerName%=Standard,NT$ARCH$
 
 [Standard.NT$ARCH$]
-%RedOctober.DeviceDesc%=RedOctober_Device, Root\RedOctober ; TODO: edit hw-id
+%OffensiveDriver.DeviceDesc%=OffensiveDriver_Device, Root\OffensiveDriver ; TODO: edit hw-id
 
-[RedOctober_Device.NT]
+[OffensiveDriver_Device.NT]
 CopyFiles=Drivers_Dir
 
 [Drivers_Dir]
-RedOctober.sys
+OffensiveDriver.sys
 
 ;-------------- Service installation
-[RedOctober_Device.NT.Services]
-AddService = RedOctober,%SPSVCINST_ASSOCSERVICE%, RedOctober_Service_Inst
+[OffensiveDriver_Device.NT.Services]
+AddService = OffensiveDriver,%SPSVCINST_ASSOCSERVICE%, OffensiveDriver_Service_Inst
 
-; -------------- RedOctober driver install sections
-[RedOctober_Service_Inst]
-DisplayName    = %RedOctober.SVCDESC%
+; -------------- OffensiveDriver driver install sections
+[OffensiveDriver_Service_Inst]
+DisplayName    = %OffensiveDriver.SVCDESC%
 ServiceType    = 1               ; SERVICE_KERNEL_DRIVER
 StartType      = 3               ; SERVICE_DEMAND_START
 ErrorControl   = 1               ; SERVICE_ERROR_NORMAL
-ServiceBinary  = %12%\RedOctober.sys
+ServiceBinary  = %12%\OffensiveDriver.sys
 
 ;
-;--- RedOctober_Device Coinstaller installation ------
+;--- OffensiveDriver_Device Coinstaller installation ------
 ;
 
-[RedOctober_Device.NT.CoInstallers]
-AddReg=RedOctober_Device_CoInstaller_AddReg
-CopyFiles=RedOctober_Device_CoInstaller_CopyFiles
+[OffensiveDriver_Device.NT.CoInstallers]
+AddReg=OffensiveDriver_Device_CoInstaller_AddReg
+CopyFiles=OffensiveDriver_Device_CoInstaller_CopyFiles
 
-[RedOctober_Device_CoInstaller_AddReg]
+[OffensiveDriver_Device_CoInstaller_AddReg]
 HKR,,CoInstallers32,0x00010000, "WdfCoInstaller$KMDFCOINSTALLERVERSION$.dll,WdfCoInstaller"
 
-[RedOctober_Device_CoInstaller_CopyFiles]
+[OffensiveDriver_Device_CoInstaller_CopyFiles]
 WdfCoInstaller$KMDFCOINSTALLERVERSION$.dll
 
-[RedOctober_Device.NT.Wdf]
-KmdfService =  RedOctober, RedOctober_wdfsect
-[RedOctober_wdfsect]
+[OffensiveDriver_Device.NT.Wdf]
+KmdfService =  OffensiveDriver, OffensiveDriver_wdfsect
+[OffensiveDriver_wdfsect]
 KmdfLibraryVersion = $KMDFVERSION$
 
 [Strings]
 SPSVCINST_ASSOCSERVICE= 0x00000002
 ManufacturerName="<Your manufacturer name>" ;TODO: Replace with your manufacturer name
-DiskName = "RedOctober Installation Disk"
-RedOctober.DeviceDesc = "RedOctober Device"
-RedOctober.SVCDESC = "RedOctober Service"
+DiskName = "OffensiveDriver Installation Disk"
+OffensiveDriver.DeviceDesc = "OffensiveDriver Device"
+OffensiveDriver.SVCDESC = "OffensiveDriver Service"

